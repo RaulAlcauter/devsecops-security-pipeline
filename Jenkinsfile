@@ -1,12 +1,18 @@
-pipeline{
+pipeline {
     agent any
 
-    stages{
-        stage('Hello'){
-            steps{
-                sh 'echo "Hello from Jenkins 0"'
+    stages {
+        stage('Install') {
+            steps {
+                sh 'pip install -r requirements.txt'
+                sh 'pip install -r requirements-dev.txt'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'python -m pytest'
             }
         }
     }
-    
 }
