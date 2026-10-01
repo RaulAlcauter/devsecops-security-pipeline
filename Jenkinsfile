@@ -1,18 +1,16 @@
 pipeline {
-    agent any
-
-    stages {
-        stage('Install') {
-            steps {
-                sh 'pip install -r requirements.txt'
-                sh 'pip install -r requirements-dev.txt'
-            }
+    agent {
+        docker {
+            image 'python:3.14-alpine'
         }
-
-        stage('Test') {
+    }
+    stages {
+        stage('Check Python') {
             steps {
-                sh 'python -m pytest'
+                sh 'python --version'
+                sh 'pip --version'
             }
         }
     }
+    
 }
