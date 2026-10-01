@@ -1,7 +1,7 @@
 import json
 import sys
 
-with open("/semgrep-results.json", "r") as f:
+with open("semgrep-results.json", "r") as f:
     data = json.load(f)
     results = data["results"]
 
