@@ -38,5 +38,17 @@ pipeline {
                 sh 'semgrep scan --json . > semgrep-results.json'
             }
         }
+
+        stage('Security Gate') {
+            agent {
+                docker {
+                    image 'python:3.14-alpine'
+                }
+            }
+
+            steps {
+                sh 'python security/semgrep_gate.py'
+            }
+        }
     }
 }
