@@ -39,7 +39,7 @@ pipeline {
             }
         }
 
-        stage('Security Gate') {
+        stage('SAST Security Gate') {
             agent {
                 docker {
                     image 'python:3.14-alpine'
@@ -48,6 +48,18 @@ pipeline {
 
             steps {
                 sh 'python security/semgrep_gate.py'
+            }
+        }
+
+        stage('SCA'){
+            agent{
+                docker{
+                    image 'aquasec/trivy:0.75.0'
+                }
+            }
+
+            steps{
+                sh 'trivy fs --severity HIGH,CRITICAL --exit-code 1 .'
             }
         }
     }
