@@ -19,8 +19,6 @@ pipeline {
             }
         }
 
-        stage('SAST'){
-            
-        }
+        
     }
 }
