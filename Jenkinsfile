@@ -18,5 +18,16 @@ pipeline {
                 sh 'python -m pytest'
             }
         }
+
+        stage('SAST'){
+            steps{
+                sh '''
+                    docker run --rm \
+                    -v "$WORKSPACE:/src" \
+                    semgrep/semgrep \
+                    semgrep scan --json /src > "$WORKSPACE/semgrep-results.json"
+                '''
+            }
+        }
     }
 }
