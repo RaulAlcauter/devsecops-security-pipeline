@@ -35,9 +35,7 @@ pipeline {
             }
 
             steps {
-                sh 'semgrep --version'
-                sh 'pwd'
-                sh 'ls -la'
+                sh 'semgrep scan --json . > semgrep-results.json'
             }
         }
     }
