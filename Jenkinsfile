@@ -3,27 +3,42 @@ pipeline {
 
     stages {
 
-        stage('Python') {
+        stage('Install') {
             agent {
                 docker {
                     image 'python:3.14-alpine'
                 }
             }
 
-            stages {
+            steps {
+                sh 'pip install -r requirements.txt'
+                sh 'pip install -r requirements-dev.txt'
+            }
+        }
 
-                stage('Install') {
-                    steps {
-                        sh 'pip install -r requirements.txt'
-                        sh 'pip install -r requirements-dev.txt'
-                    }
+        stage('SCA') {
+            agent {
+                docker {
+                    image 'aquasec/trivy:0.75.0'
                 }
+            }
 
-                stage('Test') {
-                    steps {
-                        sh 'python -m pytest'
-                    }
+            steps {
+                sh 'trivy fs --severity HIGH,CRITICAL --exit-code 1 .'
+            }
+        }
+
+        stage('Test') {
+            agent {
+                docker {
+                    image 'python:3.14-alpine'
                 }
+            }
+
+            steps {
+                sh 'pip install -r requirements.txt'
+                sh 'pip install -r requirements-dev.txt'
+                sh 'python -m pytest'
             }
         }
 
@@ -48,18 +63,6 @@ pipeline {
 
             steps {
                 sh 'python security/semgrep_gate.py'
-            }
-        }
-
-        stage('SCA'){
-            agent{
-                docker{
-                    image 'aquasec/trivy:0.75.0'
-                }
-            }
-
-            steps{
-                sh 'trivy fs --severity HIGH,CRITICAL --exit-code 1 .'
             }
         }
     }
