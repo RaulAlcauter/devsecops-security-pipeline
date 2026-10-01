@@ -20,6 +20,7 @@ pipeline {
             agent {
                 docker {
                     image 'aquasec/trivy:0.75.0'
+                    args '--entrypoint=""'
                 }
             }
 
