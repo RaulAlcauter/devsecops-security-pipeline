@@ -2,20 +2,6 @@ pipeline {
     agent none
 
     stages {
-
-        stage('Install') {
-            agent {
-                docker {
-                    image 'python:3.14-alpine'
-                }
-            }
-
-            steps {
-                sh 'pip install -r requirements.txt'
-                sh 'pip install -r requirements-dev.txt'
-            }
-        }
-
         stage('SCA') {
             agent {
                 docker {
@@ -29,18 +15,28 @@ pipeline {
             }
         }
 
-        stage('Test') {
+        stage('Python') {
             agent {
                 docker {
                     image 'python:3.14-alpine'
                 }
             }
+            stages{
+                 stage('Install'){
+                    steps {
+                        sh 'pip install -r requirements.txt'
+                        sh 'pip install -r requirements-dev.txt'
+                    }
+                }
 
-            steps {
-                sh 'pip install -r requirements.txt'
-                sh 'pip install -r requirements-dev.txt'
-                sh 'python -m pytest'
+                stage('Test'){
+                    steps {
+                        sh 'python -m pytest'
+                    }
+                }
             }
+           
+            
         }
 
         stage('SAST') {
