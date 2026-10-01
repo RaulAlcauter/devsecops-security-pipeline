@@ -20,9 +20,7 @@ pipeline {
         }
 
         stage('SAST'){
-            steps{
-                
-            }
+            
         }
     }
 }
