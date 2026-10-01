@@ -19,6 +19,19 @@ pipeline {
             }
         }
 
+        stage('SAST') {
+            agent {
+                docker {
+                    image 'semgrep/semgrep'
+                }
+            }
+
+            steps {
+                sh 'semgrep --version'
+                sh 'pwd'
+                sh 'ls -la'
+            }
+        }
         
     }
 }
