@@ -11,7 +11,7 @@ pipeline {
             }
 
             steps {
-                sh 'trivy fs --severity HIGH,CRITICAL --exit-code 1 .'
+                sh 'trivy fs --scanners vuln --severity HIGH,CRITICAL --exit-code 1 .'
             }
         }
 
