@@ -83,7 +83,7 @@ pipeline {
                 label 'built-in'
             }
             steps {
-                sh 'docker build -t devsecops-security-pipeline:1.0 .'
+                sh 'docker build -t devsecops-security-pipeline:1.4 .'
             }
         }
 
@@ -95,7 +95,7 @@ pipeline {
                 }
             }
             steps{
-                sh 'trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 devsecops-security-pipeline:1.0'
+                sh 'trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 devsecops-security-pipeline:1.4'
             }
         }
     }
