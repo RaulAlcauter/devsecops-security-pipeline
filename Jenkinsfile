@@ -86,5 +86,17 @@ pipeline {
                 sh 'docker build -t devsecops-security-pipeline:1.0 .'
             }
         }
+
+        stage('Container Security'){
+            agent {
+                docker {
+                    image 'aquasec/trivy:0.75.0'
+                    args '--entrypoint=""'
+                }
+            }
+            steps{
+                sh 'trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 devsecops-security-pipeline:1.0'
+            }
+        }
     }
 }
