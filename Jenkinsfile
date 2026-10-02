@@ -62,5 +62,18 @@ pipeline {
                 sh 'python security/semgrep_gate.py'
             }
         }
+
+        stage('Secret Scanning'){
+            agent {
+                docker {
+                    image 'zricethezav/gitleaks:v8.18.4'
+                    args '--entrypoint=""'
+                }
+            }
+
+            steps {
+                sh 'gitleaks detect --no-git'
+            }
+        }
     }
 }
