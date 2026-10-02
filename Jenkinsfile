@@ -72,7 +72,7 @@ pipeline {
             }
 
             steps {
-                sh 'gitleaks detect --no-git'
+                sh 'gitleaks detect --no-git --report-format json --report-path gitleaks-report.json'
             }
         }
     }
