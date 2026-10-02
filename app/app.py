@@ -3,7 +3,6 @@ from flask import Flask, request
 app = Flask(__name__)
 
 API_KEY = "AKIA1234567890FAKE"
-token = "ghp_aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789"
 
 @app.route("/")
 def show_message():
