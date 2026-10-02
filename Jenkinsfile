@@ -75,5 +75,14 @@ pipeline {
                 sh 'gitleaks detect --no-git --report-format json --report-path gitleaks-report.json'
             }
         }
+
+        stage('Build Image') {
+            agent {
+                label 'built-in'
+            }
+            steps {
+                sh 'docker build -t devsecops-security-pipeline:1.0 .'
+            }
+        }
     }
 }
