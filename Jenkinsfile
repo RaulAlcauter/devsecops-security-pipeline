@@ -72,8 +72,7 @@ pipeline {
             }
 
             steps {
-                sh 'gitleaks detect --no-git --report-format json --report-path gitleaks-report.json || true'
-                sh 'cat gitleaks-report.json'
+                sh 'gitleaks detect --no-git --report-format json --report-path gitleaks-report.json'
             }
         }
     }
