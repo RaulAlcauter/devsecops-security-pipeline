@@ -72,7 +72,9 @@ pipeline {
             }
 
             steps {
-                sh 'gitleaks detect --no-git'
+                sh 'pwd'
+                sh 'find . -maxdepth 2 -type f | sort'
+                sh 'gitleaks detect --no-git --verbose'
             }
         }
 
