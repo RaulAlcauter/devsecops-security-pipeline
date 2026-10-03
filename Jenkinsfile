@@ -2,6 +2,7 @@ pipeline {
     agent none
 
     stages {
+
         stage('SCA') {
             agent {
                 docker {
@@ -11,32 +12,38 @@ pipeline {
             }
 
             steps {
-                sh 'trivy fs --scanners vuln --severity HIGH,CRITICAL --exit-code 1 .'
+                sh '''
+                    trivy fs \
+                        --scanners vuln \
+                        --format json \
+                        --output trivy-results.json \
+                        .
+                '''
             }
         }
 
-        stage('Python') {
+        stage('Python Tests') {
             agent {
                 docker {
                     image 'python:3.14-alpine'
                 }
             }
-            stages{
-                 stage('Install'){
+
+            stages {
+
+                stage('Install') {
                     steps {
                         sh 'pip install -r requirements.txt'
                         sh 'pip install -r requirements-dev.txt'
                     }
                 }
 
-                stage('Test'){
+                stage('Test') {
                     steps {
                         sh 'python -m pytest'
                     }
                 }
             }
-           
-            
         }
 
         stage('SAST') {
@@ -47,23 +54,16 @@ pipeline {
             }
 
             steps {
-                sh 'semgrep scan --json . > semgrep-results.json'
+                sh '''
+                    semgrep scan \
+                        --json \
+                        --output semgrep-results.json \
+                        .
+                '''
             }
         }
 
-        stage('SAST Security Gate') {
-            agent {
-                docker {
-                    image 'python:3.14-alpine'
-                }
-            }
-
-            steps {
-                sh 'python security/semgrep_gate.py'
-            }
-        }
-
-        stage('Secret Scanning'){
+        stage('Secret Scanning') {
             agent {
                 docker {
                     image 'zricethezav/gitleaks:v8.18.4'
@@ -72,9 +72,12 @@ pipeline {
             }
 
             steps {
-                sh 'pwd'
-                sh 'find . -maxdepth 2 -type f | sort'
-                sh 'gitleaks detect --no-git --verbose'
+                sh '''
+                    gitleaks detect \
+                        --no-git \
+                        --report-format json \
+                        --report-path gitleaks-results.json
+                '''
             }
         }
 
@@ -82,20 +85,42 @@ pipeline {
             agent {
                 label 'built-in'
             }
+
             steps {
                 sh 'docker build -t devsecops-security-pipeline:1.4 .'
             }
         }
 
-        stage('Container Security'){
+        stage('Container Security') {
             agent {
                 docker {
                     image 'aquasec/trivy:0.75.0'
                     args '--entrypoint=""'
                 }
             }
-            steps{
-                sh 'trivy image --scanners vuln --severity HIGH,CRITICAL --exit-code 1 devsecops-security-pipeline:1.4'
+
+            steps {
+                sh '''
+                    trivy image \
+                        --scanners vuln \
+                        --format json \
+                        --output container-trivy-results.json \
+                        devsecops-security-pipeline:1.4
+                '''
+            }
+        }
+
+        stage('Security Aggregator') {
+            agent {
+                docker {
+                    image 'python:3.14-alpine'
+                }
+            }
+
+            steps {
+                sh '''
+                    python security/main.py
+                '''
             }
         }
     }
