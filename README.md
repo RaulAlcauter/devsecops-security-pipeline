@@ -8,6 +8,8 @@ The main goal is to demonstrate how security can be integrated
 throughout the software development lifecycle rather than being treated
 as a final manual check.
 
+![Final CI/CD pipeline](images/final-pipeline.png.png)
+
 ## Overview
 
 The project contains a small Flask application and a Jenkins pipeline
