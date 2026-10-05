@@ -168,9 +168,8 @@ pipeline {
 
                     docker ps --filter "name=devsecops-app"
 
-                    docker run --rm \
-                        curlimages/curl:8.11.1 \
-                        http://host.docker.internal:5001/health
+                    docker exec devsecops-app \
+                        python -c "import urllib.request; print(urllib.request.urlopen('http://127.0.0.1:5000/health').read().decode())"
                 '''
             }
         }
