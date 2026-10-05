@@ -2,6 +2,7 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
+token = "ghp_aBcDeFgHiJkLmNoPqRsTuVwXyZ0123456789"
 
 @app.route("/")
 def show_message():
