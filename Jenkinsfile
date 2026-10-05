@@ -147,5 +147,32 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            agent {
+                label 'built-in'
+            }
+
+            steps {
+                sh '''
+                    docker pull rulas85/devsecops-security-pipeline:latest
+
+                    docker rm -f devsecops-app || true
+
+                    docker run -d \
+                        --name devsecops-app \
+                        -p 5001:5000 \
+                        rulas85/devsecops-security-pipeline:latest
+
+                    sleep 3
+
+                    docker ps --filter "name=devsecops-app"
+
+                    docker run --rm \
+                        curlimages/curl:8.11.1 \
+                        http://host.docker.internal:5001/health
+                '''
+            }
+        }
     }
 }
