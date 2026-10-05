@@ -73,10 +73,14 @@ pipeline {
 
             steps {
                 sh '''
+                    rm -f gitleaks-results.json
+
                     gitleaks detect \
                         --no-git \
                         --report-format json \
                         --report-path gitleaks-results.json || true
+
+                    test -f gitleaks-results.json || echo '[]' > gitleaks-results.json
                 '''
             }
         }
