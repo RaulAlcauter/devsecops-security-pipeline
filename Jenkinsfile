@@ -91,7 +91,7 @@ pipeline {
             }
 
             steps {
-                sh 'docker build -t devsecops-security-pipeline:1.4 .'
+                sh 'docker build -t rulas85/devsecops-security-pipeline:latest .'
             }
         }
 
@@ -109,7 +109,7 @@ pipeline {
                         --scanners vuln \
                         --format json \
                         --output container-trivy-results.json \
-                        devsecops-security-pipeline:1.4
+                        rulas85/devsecops-security-pipeline:latest
                 '''
             }
         }
@@ -123,6 +123,28 @@ pipeline {
 
             steps {
                 sh 'python security/main.py'
+            }
+        }
+
+        stage('Push Image') {
+            agent {
+                label 'built-in'
+            }
+
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerhub',
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD'
+                    )
+                ]) {
+                    sh '''
+                        echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+                        docker push rulas85/devsecops-security-pipeline:latest
+                        docker logout
+                    '''
+                }
             }
         }
     }
