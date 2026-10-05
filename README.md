@@ -86,28 +86,16 @@ Developer
 
 ## Security Tools
 
-  -----------------------------------------------------------------------
-  Tool                                Purpose
-  ----------------------------------- -----------------------------------
-  **Jenkins**                         CI/CD orchestration
-
-  **Pytest**                          Automated unit testing
-
-  **Semgrep**                         Static Application Security Testing
-                                      (SAST)
-
-  **Trivy**                           Software Composition Analysis and
-                                      container vulnerability scanning
-
-  **Gitleaks**                        Secret detection
-
-  **Docker**                          Application containerization
-
-  **Python**                          Security report parsing,
-                                      aggregation and policy enforcement
-
-  **Docker Hub**                      Container image registry
-  -----------------------------------------------------------------------
+| Tool | Purpose |
+|---|---|
+| Jenkins | CI/CD orchestration |
+| Pytest | Automated unit testing |
+| Semgrep | Static Application Security Testing (SAST) |
+| Trivy | Software Composition Analysis and container vulnerability scanning |
+| Gitleaks | Secret detection |
+| Docker | Application containerization |
+| Python | Security report parsing, aggregation and policy enforcement |
+| Docker Hub | Container image registry |
 
 ## CI/CD Pipeline
 
