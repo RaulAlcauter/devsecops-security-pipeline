@@ -58,7 +58,7 @@ pipeline {
                     semgrep scan \
                         --json \
                         --output semgrep-results.json \
-                        .
+                        . || true
                 '''
             }
         }
@@ -76,7 +76,7 @@ pipeline {
                     gitleaks detect \
                         --no-git \
                         --report-format json \
-                        --report-path gitleaks-results.json
+                        --report-path gitleaks-results.json || true
                 '''
             }
         }
@@ -118,9 +118,7 @@ pipeline {
             }
 
             steps {
-                sh '''
-                    python security/main.py
-                '''
+                sh 'python security/main.py'
             }
         }
     }

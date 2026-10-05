@@ -33,12 +33,16 @@ class SemgrepParser(Parser):
 
 class TrivyParser(Parser):
 
+    def __init__(self, file, category):
+        super().__init__(file)
+        self.category = category
+
     def parse(self):
         data = self.load_data()
         
         results = data["Results"]
         
-        report = SecurityReport("Trivy", "SCA")
+        report = SecurityReport("Trivy", self.category)
         for result in results:
             for vulnerability in result.get("Vulnerabilities", []):
                 report.add_finding(Finding(
