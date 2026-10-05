@@ -405,10 +405,10 @@ Se pueden añadir controles de seguridad específicos de Kubernetes.
   1       Git + Aplicación                 ✅
   2       CI/CD + Jenkins                  ✅
   3       SAST + Semgrep + Security Gate   ✅
-  4       SCA + Dependency-Check           🔄
-  5       Secret Scanning + Gitleaks       ⏳
-  6       Docker                           ⏳
-  7       Container Security + Trivy       ⏳
+  4       SCA + Dependency-Check           ✅
+  5       Secret Scanning + Gitleaks       ✅
+  6       Docker                           ✅
+  7       Container Security + Trivy       ✅
   8       Security Automation              ⏳
   9       Full DevSecOps Pipeline          ⏳
   10      Secure Deployment                ⏳

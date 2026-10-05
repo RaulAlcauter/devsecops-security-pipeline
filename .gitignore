@@ -216,3 +216,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Security scan reports
+semgrep-results.json
+trivy-results.json
+gitleaks-results.json
+container-trivy-results.json
